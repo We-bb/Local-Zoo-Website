@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Animal {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  species       String
+  age           Int?
+  description   String?       // optional description
+  image         String?       // URL to an image
+  location      String?       // exhibit location or region
+  birthDate     DateTime?     // animal's date of birth
+  naturalHabitat String?      // natural habitat description
+}
+
+model User {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  password     String
+  name         String
+  isAdmin      Boolean  @default(false)
+  profileImage String   @default("https://static.vecteezy.com/system/resources/thumbnails/048/334/475/small_2x/a-person-icon-on-a-transparent-background-png.png")
+  membership   Membership @default(GUEST)
+  tickets      Ticket[]
+}
+
+// Embedded type for tickets
+type Ticket {
+  date       DateTime
+  ticketType TicketType
+  quantity   Int
+}
+
+// Enum for ticket types
+enum TicketType {
+  CHILD
+  ADULT
+  SENIOR
+}
+
+// Enum for membership types
+enum Membership {
+  GUEST
+  BASIC
+  PLUS
+  PRO
+}
