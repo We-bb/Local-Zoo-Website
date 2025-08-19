@@ -37,6 +37,14 @@ type Ticket {
   quantity   Int
 }
 
+// Ticket prices for different types
+model TicketPrice {
+  id    String  @id @default("default") @map("_id")
+  CHILD Float   @default(10)
+  ADULT Float   @default(20)
+  SENIOR Float  @default(15)
+}
+
 // Enum for ticket types
 enum TicketType {
   CHILD
