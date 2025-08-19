@@ -9,10 +9,10 @@ interface AdminPageProps {
   params: { id: string };
 }
 
-export const dynamic = "force-dynamic"; // Ensure this page is always fresh
+export const dynamic = "force-dynamic";
 
 export default async function AdminPage(props: AdminPageProps) {
-  const id = props.params.id; // ✅ correct access
+  const id = props.params.id;
 
   const admin = await prisma.user.findUnique({
     where: { id },

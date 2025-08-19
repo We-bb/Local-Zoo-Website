@@ -1,4 +1,3 @@
-// components/TicketPriceEditor.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,8 +13,15 @@ export default function TicketPriceEditor() {
   const [prices, setPrices] = useState<TicketPrices>({ CHILD: 0, ADULT: 0, SENIOR: 0 });
 
   useEffect(() => {
-    // Load current ticket prices
-    axios.get("/api/tickets/prices").then((res) => setPrices(res.data));
+    // Load current ticket prices and ignore id
+    axios.get("/api/tickets/prices").then((res) => {
+      const data = res.data;
+      setPrices({
+        CHILD: data.CHILD,
+        ADULT: data.ADULT,
+        SENIOR: data.SENIOR,
+      });
+    });
   }, []);
 
   const handleEdit = async (type: keyof TicketPrices) => {
@@ -33,7 +39,7 @@ export default function TicketPriceEditor() {
     <div className="bg-gray-200 dark:bg-gray-700 rounded p-4">
       <h2 className="text-xl font-semibold mb-4">Ticket Prices</h2>
       <ul className="space-y-2">
-        {(Object.keys(prices) as (keyof TicketPrices)[]).map((type) => (
+        {(["CHILD", "ADULT", "SENIOR"] as (keyof TicketPrices)[]).map((type) => (
           <li key={type} className="flex justify-between items-center bg-white dark:bg-gray-800 p-2 rounded">
             <span>{type}</span>
             <div className="flex items-center gap-2">
